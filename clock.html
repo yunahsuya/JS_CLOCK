@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>時鐘</title>
+
+    <style>
+      /*  ------------------------------------------------------ 時鐘(指針)外觀 ------------------------------------------- */
+
+      /* 背景 */
+      body {
+        background: linear-gradient(
+            180deg,
+            #ffcccc 0%,
+            #ffcccc 45%,
+            #ffffff 45%,
+            #ffffff 100%
+          )
+          no-repeat;
+      }
+
+      /* 時鐘 本體 */
+      #clockHands {
+        width: 500px;
+        height: 500px;
+
+        border: 10px solid #fff;
+
+        background: #59e5de;
+        border-radius: 50%;
+
+        position: relative;
+
+        margin: 50px auto;
+
+        /* box-shadow: 0 2vw 4vw -1vw rgb(137 136 136); */
+
+        box-shadow: 0 10px 4vw -1vw rgb(137 136 136);
+      }
+
+      /* 小時 外觀 */
+      #hour {
+        width: 20%;
+        height: 8px;
+
+        border-radius: 5px;
+
+        position: absolute;
+        left: 30%;
+        top: calc(50% - 4px);
+
+        transform-origin: right center;
+
+        background: #fff;
+      }
+
+      /* 分鐘 外觀 */
+      #minute {
+        width: 40%;
+        height: 6px;
+
+        border-radius: 5px;
+
+        position: absolute;
+        left: 10%;
+        top: calc(50% - 3px);
+
+        transform-origin: right center;
+
+        background: #fff;
+      }
+
+      /* 秒數 外觀 */
+      #second {
+        width: 45%;
+        height: 4px;
+
+        background: #fff;
+
+        border-radius: 5px;
+
+        position: absolute;
+        left: 5%;
+        top: calc(50% - 2px);
+
+        transform-origin: right center;
+      }
+
+      /* 點 外觀 */
+      #dot {
+        width: 20px;
+        height: 20px;
+
+        border-radius: 50%;
+
+        position: absolute;
+        top: calc(50% - 15px);
+        left: calc(50% - 15px);
+
+        background: #20b7af;
+        border: 5px solid #fff;
+      }
+
+      /*  ------------------------------------------- 時鐘(數字)外觀 ----------------------------------- */
+
+      #clockNumbers {
+        /* 水平置中對齊 */
+        text-align: center;
+
+        /* 遠離時鐘本體 */
+        margin: 80px auto;
+
+        font-size: 80px;
+
+        font-family: "Noto Sans JP", sans-serif;
+
+        font-weight: 400;
+      }
+
+      /*  ------------------------------------------- 時鐘(數字)外觀 ----------------------------------- */
+    </style>
+  </head>
+  <body>
+    <!-- 數字字體設定 -->
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Noto+Sans+JP:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--  時鐘本體(指針)  -->
+    <div id="clockHands">
+      <!-- ----------------------------------------- 指針 --------------------------------------- -->
+      <!-- 小時 -->
+      <div id="hour"></div>
+
+      <!-- 分 -->
+      <div id="minute"></div>
+
+      <!-- 秒 -->
+      <div id="second"></div>
+
+      <!-- 點 -->
+      <div id="dot"></div>
+    </div>
+
+    <!-- ------------------------------------------- 數字 --------------------------------------- -->
+
+    <!--  時鐘(數字)  -->
+    <div id="clockNumbers">
+      <!-- 小時(字) -->
+      <span id="hourText"></span>：
+
+      <!-- 分(字) -->
+      <span id="minuteText"></span>：
+
+      <!-- 秒(字) -->
+      <span id="secondText"></span>
+    </div>
+
+    <!-- --------------------------------------- 程式 ------------------------------------------- -->
+    <script>
+      // ---------------------------------- 取得「指針」 -----------------------------------
+
+      // 取得 小時 (Element)(指針)
+      const elHour = document.getElementById("hour");
+
+      // 取得 分鐘 (指針)
+      const elMinute = document.getElementById("minute");
+
+      // 取得 秒數 (指針)
+      const elSecond = document.getElementById("second");
+
+      // ---------------------------------- 取得「數字」 -----------------------------------
+
+      // 取得 小時 (數字)
+      const numHour = document.getElementById("hourText");
+
+      // 取得 分鐘 (數字)
+      const numMinute = document.getElementById("minuteText");
+
+      // 取得 秒數 (數字)
+      const numSecond = document.getElementById("secondText");
+
+      // ------------------------------ 取得「指針」詳細資訊 -----------------------------------
+
+      // 寫 時鐘 的 function
+      const clock = () => {
+        // 取得 日期
+        const date = new Date();
+
+        // 取得 小時 ()
+        const h = date.getHours();
+
+        // 取得 分鐘
+        const m = date.getMinutes();
+
+        // 取得 秒數
+        const s = date.getSeconds();
+
+        // ------------------------------ 「指針」每秒轉動樣式 -----------------------------------
+        elHour.style.transform = `rotate(${h * 30 + m * 0.5 + 90}deg)`;
+        elMinute.style.transform = `rotate(${m * 6 + 90}deg)`;
+        elSecond.style.transform = `rotate(${s * 6 + 90}deg)`;
+
+        // ------------------------------ 「數字」每秒轉動樣式 -----------------------------------
+
+        // 小時 (數字)
+        numHour.innerText = h.toString().padStart(2, "0");
+
+        // 分鐘 (數字)
+        // .padStart(2, "0") => 兩位數 (原本個位數，只會有一位數，所以補上 0)
+        numMinute.innerText = m.toString().padStart(2, "0");
+
+        // 秒數 (數字)
+        numSecond.innerText = s.toString().padStart(2, "0");
+      };
+
+      // 每隔一秒轉動
+      setInterval(clock, 1000);
+
+      clock();
+    </script>
+  </body>
+</html>
